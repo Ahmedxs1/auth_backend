@@ -25,7 +25,7 @@ def get_current_user(
         )
 
     user = db.query(User).filter(
-        User.id == int(current_user_id)
+        User.user_id == int(current_user_id)
     ).first()
 
     if user is None:
@@ -34,7 +34,4 @@ def get_current_user(
             detail="User not found"
         )
 
-    return UserResponse(
-        username=user.username,
-        email=user.email
-    )
+    return user

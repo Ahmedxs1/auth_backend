@@ -1,36 +1,32 @@
-import { useEffect, useState } from "react";
+import {
+    Routes,
+    Route,
+} from "react-router-dom";
+
+import Login from "./pages/Login";
+import MainPage from "./pages/MainPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [users, setUsers] = useState([]);
+    return (
+        <Routes>
 
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const response = await fetch("http://localhost:3000/stats/users");
+            <Route
+                path="/login"
+                element={<Login />}
+            />
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+            <Route
+                path="/"
+                element={
+                    <ProtectedRoute>
+                        <MainPage />
+                    </ProtectedRoute>
+                }
+            />
 
-        const data = await response.json();
-        setUsers(data);
-      } catch (error) {
-        console.error("Failed to fetch data:", error.message);
-      }
-    }
-
-    fetchUsers();
-  }, []);
-
-  return (
-    <>
-      <ul>
-        {users.map((user, index) => (
-          <li key={index}>{user.username}</li>
-        ))}
-      </ul>
-    </>
-  );
+        </Routes>
+    );
 }
 
 export default App;

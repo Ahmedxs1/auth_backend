@@ -1,12 +1,12 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
 
-from schemas.user import UserRegister , UserResponse , UserLogin
+from schemas.user import UserRegister , UserResponse , UserLogin , JWT_LoginKey
 from models.models import User
 
 from fastapi import HTTPException
 
-from services.security import hash_password , verify_password
+from services.security import hash_password , verify_password , create_access_token
 
 def register_user_db(data: UserRegister, db: Session):
 
@@ -40,7 +40,7 @@ def register_user_db(data: UserRegister, db: Session):
         email=data.email
     )
 
-def auth_user_db(data: UserLogin, db: Session) -> UserResponse:
+def auth_user_db(data: UserLogin, db: Session) -> JWT_LoginKey:
 
     user = db.query(User).filter(
         User.email == data.email
@@ -55,7 +55,6 @@ def auth_user_db(data: UserLogin, db: Session) -> UserResponse:
             detail="Invalid passowrd"
         )
     
-    return UserResponse(
-        username=user.username,
-        email=user.email
-    )
+    token = create_access_token(user.user_id)
+
+    return JWT_LoginKey(access_token=token, token_type="bearer")
