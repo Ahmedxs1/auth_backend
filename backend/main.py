@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from routes.auth import router as user_auth_router
 from routes.stats import router as user_stats_router
+from routes.chat import router as chat_router
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -19,6 +20,7 @@ app.add_middleware(
 
 app.include_router(user_auth_router)
 app.include_router(user_stats_router)
+app.include_router(chat_router)
 
 
 from sqlalchemy.orm import Session
