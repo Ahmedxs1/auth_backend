@@ -345,7 +345,7 @@ function renderMessage(message) {
     senderElement.textContent =
         isMine
             ? "You"
-            : `User ${message.sender_id}`;
+            : `${message.sender_name}`;
 
 
     /* Content */

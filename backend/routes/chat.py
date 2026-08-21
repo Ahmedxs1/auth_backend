@@ -1,7 +1,7 @@
 from fastapi import APIRouter , Depends , WebSocket, WebSocketDisconnect
 from database.database import get_db
 from sqlalchemy.orm import Session
-from schemas.message import MessageSchema
+from schemas.message import MessageResponse
 from services.message import get_previous_messages_db
 from websocketmanager.websocketmanager import WebSocketManager
 from services.security import verify_access_token
@@ -10,7 +10,7 @@ router = APIRouter(prefix="/chat")
 
 manager = WebSocketManager()
 
-@router.get("/previous_messages", response_model=list[MessageSchema])
+@router.get("/previous_messages", response_model=list[MessageResponse])
 def get_previous_messages(db: Session = Depends(get_db)):
     return get_previous_messages_db(db)
 

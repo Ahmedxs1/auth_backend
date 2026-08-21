@@ -1,8 +1,9 @@
 from fastapi import WebSocket
 import json
 from datetime import datetime
-from schemas.message import MessageSchema
-from services.message import store_message_db
+from schemas.message import MessageDb
+from services.message import store_message_db , get_name_from_id
+from sqlalchemy.orm import Session
 
 class WebSocketManager:
     def __init__(self):
@@ -33,18 +34,19 @@ class WebSocketManager:
         if (data["type"] == "message"):
             msg_time = datetime.utcnow()
 
-            message = MessageSchema(
+            message = MessageDb(
                 sender_id = self.get_id_from_ws(ws),
                 content = data["content"],
                 time = msg_time
             )
 
             store_message_db(message, db)
+            sender_name = get_name_from_id(message.sender_id, db)
 
-            await self.broadcast_message(ws, message, True)
+            await self.broadcast_message(ws, message, sender_name, True)
 
 
-    async def broadcast_message(self, sender: WebSocket, message: MessageSchema, sould_notify_sender: bool):
+    async def broadcast_message(self, sender: WebSocket, message: MessageDb, sender_name: str, sould_notify_sender: bool):
         print("<call> broadcast_message")
         for connection in self.connections:
             if sender == connection["ws"] and not sould_notify_sender:
@@ -52,6 +54,7 @@ class WebSocketManager:
             await connection["ws"].send_json({
                 "type": "message",
                 "sender_id": message.sender_id,
+                "sender_name": sender_name,
                 "content": message.content,
                 "time": message.time.isoformat()
             })
