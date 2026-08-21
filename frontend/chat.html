@@ -1,18 +1,85 @@
-<!-- entry file -->
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
-    <script type="module" src="js/chat.js"></script>
-</head>
-<body>
-    <h1>Public chat</h1>
-    <button value="log out" id="log-out-btn">Log out</button>
 
-    <div id="chat"></div>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Public Chat</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script
+        type="module"
+        src="js/chat.js"
+        defer
+    ></script>
+
+</head>
+
+<body class="chat-page">
+
+    <main class="chat-container">
+
+        <header class="chat-header">
+
+            <div class="chat-title">
+
+                <h1>Public Chat</h1>
+
+                <div class="chat-status">
+
+                    <span class="status-dot"></span>
+
+                    <span id="online-count">
+                        Connecting...
+                    </span>
+
+                </div>
+
+            </div>
+
+            <button
+                id="log-out-btn"
+                class="logout-button"
+            >
+                Log out
+            </button>
+
+        </header>
+
+
+        <div id="chat"></div>
+
+
+        <form
+            id="message-form"
+            class="chat-input-area"
+        >
+
+            <input
+                type="text"
+                id="message-input"
+                placeholder="Write a message..."
+                autocomplete="off"
+                maxlength="2000"
+            >
+
+            <button
+                type="submit"
+                id="msg-btn"
+            >
+                Send
+            </button>
+
+        </form>
+
+    </main>
 
 </body>
 </html>
