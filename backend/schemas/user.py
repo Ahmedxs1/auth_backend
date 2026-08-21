@@ -9,7 +9,7 @@ class UserRegister(UserBase):
     password: str = Field(..., min_length=8)
 
 class UserResponse(UserBase):
-    pass
+    user_id: int = Field(...)
 
 class UserLogin(BaseModel):
     email: EmailStr

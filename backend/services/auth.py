@@ -8,7 +8,7 @@ from fastapi import HTTPException
 
 from services.security import hash_password , verify_password , create_access_token
 
-def register_user_db(data: UserRegister, db: Session):
+def register_user_db(data: UserRegister, db: Session) -> UserResponse:
 
     # SELECT * FROM users
     # WHERE username = ... OR email = ...
@@ -36,6 +36,7 @@ def register_user_db(data: UserRegister, db: Session):
     db.refresh(user)
 
     return UserResponse(
+        user_id=user.user_id,
         username=data.username,
         email=data.email
     )
